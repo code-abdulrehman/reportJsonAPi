@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaXmark } from 'react-icons/fa6';
 
-function CustomPopover ({
+function CustomPopover({
   popOverTrigger,
   popOverContent,
   popoverTitle,
@@ -39,49 +39,36 @@ function CustomPopover ({
       </div>
       {isPopoverOpen && (
         <div
-          className="fixed rounded-2xl inset-0 z-[1000] flex items-center justify-center backdrop-blur-md h-[85vh] w-[80vw]"
+          className="fixed rounded-2xl inset-0 z-[1000] flex items-center justify-center backdrop-blur-md"
           onClick={handlePopoverToggle} // This allows closing the popover when clicking outside
         >
           <div
             ref={popoverRef}
-            className="shadow-xl h-[600px] min-w-96 rounded-2xl themeGlassBg backdrop-blur-xl text-gray-800 dark:text-white max-w-auto overflow-y-hidden border-orange-700 dark:border-orange-400 border "
+            className=" border-b-2 w-[600px] rounded-2xl backdrop-blur-xl shadow-md shadow-yellow-500 bg-slate-600 text-gray-100 max-w-auto overflow-y-hidden"
             onClick={(e) => e.stopPropagation()} // Prevent clicks inside the popover from closing it
           >
             {(popoverTitle || closeArrow) && (
               <>
-              <div className="flex justify-between items-center gap-2 mb-2 border-b border-orange-700 dark:border-orange-400 p-4">
-                {popoverTitle && (
-                  <div className="font-bold capitalize w-[70%] text-ellipsis overflow-hidden">{popoverTitle}</div>
-                )}
-                {closeArrow && (
-                  <div onClick={handlePopoverToggle} className="group hover:bg-gray-200 dark:hover:bg-gray-800 p-1 rounded-md cursor-pointer">
-                    <FaXmark className="text-gray-400 group-hover:text-red-500 dark:group-hover:text-red-600" />
-                  </div>
-                )}
-              </div>
+                <div className="flex justify-between items-center gap-2 mb-2 p-4 border-b-2 border-gray-500">
+                  {popoverTitle && (
+                    <div className="font-bold capitalize w-[70%] text-ellipsis overflow-hidden text-yellow-500 text-xl">{popoverTitle}</div>
+                  )}
+                  {closeArrow && (
+                    <div onClick={handlePopoverToggle} className="group/icon p-1 rounded-md cursor-pointer hover:bg-red-500 group/icon hover:text-white">
+                      <FaXmark className="text-xl group-hover/icon:text-white text-red-500 group-hover:text-red-500" />
+                    </div>
+                  )}
+                </div>
               </>
             )}
             <div className='p-4 overflow-x-hidden overflow-y-auto h-[88%]'>
-            {popOverContent}
+              {popOverContent}
             </div>
           </div>
         </div>
       )}
     </>
   );
-};
+}
 
 export default CustomPopover;
-
-
-// use 
-
-{/* <CustomPopover
-popOverTrigger={<button className="btn">Log in</button>}
-popOverContent={<div className='min-h-96 h-[300px] w-[500px]'>
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur aliquid nihil earum ullam mollitia alias maxime cupiditate asperiores laboriosam doloribus!</p>
-</div>}
-popoverTitle={<span> Title</span>}
-closeArrow={true}
-popOverContentPlacement="bottom"
-/> */}
