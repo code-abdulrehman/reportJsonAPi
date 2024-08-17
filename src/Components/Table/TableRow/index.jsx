@@ -73,7 +73,7 @@ function TableRow({ post }) {
                             <BiChevronRight className='group-hover/icon:font-bold' />
                         </span>}
                         popOverContent={<div className='min-h-[200px]'>
-                            <SinglePost postId={post.id} />
+                            <SinglePost data={post} />
                         </div>}
                         popoverTitle={<span className='capitalize'>{post.title || "Title"}</span>}
                         isPopoverOpen={isSinglePostPopoverOpen}
