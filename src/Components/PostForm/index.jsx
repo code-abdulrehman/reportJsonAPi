@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { SetPost } from '../../lib/redux/Slice/SetPostSlice';
 import { UpdatePost } from '../../lib/redux/Slice/UpdatePostSlice';
 import { setPostLocally, updatePostLocally } from '../../lib/redux/Slice/GetAllPostSlice';
+import { generateRandomFloor } from '../../lib/helper';
+const id_number = generateRandomFloor();
 
 const PostForm = ({ postId, postTitle, postBody, userId, onSuccess }) => {
   const dispatch = useDispatch();
@@ -15,7 +17,7 @@ const PostForm = ({ postId, postTitle, postBody, userId, onSuccess }) => {
     body:  postBody,
   };
   const initialValues = {
-    id: 100+3,
+    id: id_number,
     userId: '',
     title: '',
     body: '',
