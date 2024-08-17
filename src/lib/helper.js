@@ -6,3 +6,8 @@ export function generateRandomFloor() {
     return flooredNumber;
 }
 
+
+export const handleTextareaChange = (e) => {
+    setCharCount(e.target.value.length);
+    helpers.setValue(e.target.value);
+  };
