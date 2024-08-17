@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { baseUrl } from "../../constant";
-
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { baseUrl } from '../../constant';
 
 export const GetAllPost = createAsyncThunk(
     'getAllPost/fetch',
@@ -29,7 +28,20 @@ export const GetAllPostSlice = createSlice({
         status: 'idle',
         error: null,
     },
-    reducers: {},
+    reducers: {
+        setPostLocally: (state, action) => {
+            state.data.push(action.payload);
+        },
+        updatePostLocally: (state, action) => {
+            const index = state.data.findIndex(post => post.id === action.payload.id);
+            if (index !== -1) {
+                state.data[index] = action.payload;
+            }
+        },
+        removePostLocally: (state, action) => {
+            state.data = state.data.filter(post => post.id !== action.payload);
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(GetAllPost.pending, (state) => {
@@ -47,5 +59,7 @@ export const GetAllPostSlice = createSlice({
             });
     }
 });
+
+export const { setPostLocally, updatePostLocally, removePostLocally } = GetAllPostSlice.actions;
 
 export const GetAllPostReducer = GetAllPostSlice.reducer;

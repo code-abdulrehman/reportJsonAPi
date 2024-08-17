@@ -8,6 +8,7 @@ function CustomPopover({
   closeArrow = false,
   isPopoverOpen: controlledIsOpen,
   handlePopoverToggle: controlledToggle,
+  onSuccess
 }) {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const isPopoverOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
@@ -32,6 +33,12 @@ function CustomPopover({
     };
   }, [isPopoverOpen]);
 
+  useEffect(() => {
+    if (onSuccess && !isPopoverOpen) {
+      onSuccess();
+    }
+  }, [isPopoverOpen, onSuccess]);
+
   return (
     <>
       <div onClick={handlePopoverToggle} className="cursor-pointer">
@@ -44,14 +51,16 @@ function CustomPopover({
         >
           <div
             ref={popoverRef}
-            className=" border-b-2 w-[600px] rounded-2xl backdrop-blur-xl shadow-md shadow-yellow-500 bg-slate-600 text-gray-100 max-w-auto overflow-y-hidden"
+            className="border-b-2 w-[600px] rounded-2xl backdrop-blur-xl shadow-md shadow-yellow-500 bg-slate-600 text-gray-100 max-w-auto overflow-y-hidden"
             onClick={(e) => e.stopPropagation()} // Prevent clicks inside the popover from closing it
           >
             {(popoverTitle || closeArrow) && (
               <>
                 <div className="flex justify-between items-center gap-2 mb-2 p-4 border-b-2 border-gray-500">
                   {popoverTitle && (
-                    <div className="font-bold capitalize w-[70%] text-ellipsis overflow-hidden text-yellow-500 text-xl">{popoverTitle}</div>
+                    <div className="font-bold capitalize w-[70%] text-ellipsis overflow-hidden text-yellow-500 text-xl">
+                      {popoverTitle}
+                    </div>
                   )}
                   {closeArrow && (
                     <div onClick={handlePopoverToggle} className="group/icon p-1 rounded-md cursor-pointer hover:bg-red-500 group/icon hover:text-white">

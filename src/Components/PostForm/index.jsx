@@ -1,26 +1,22 @@
 import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SetPost } from '../../lib/redux/Slice/SetPostSlice';
 import { UpdatePost } from '../../lib/redux/Slice/UpdatePostSlice';
-import { GetPost } from '../../lib/redux/Slice/GetPostSlice';
+import { setPostLocally, updatePostLocally } from '../../lib/redux/Slice/GetAllPostSlice';
 
-const PostForm = ({ postId }) => {
+const PostForm = ({ postId, postTitle, postBody, userId, onSuccess }) => {
   const dispatch = useDispatch();
-  const { data, status, error } = useSelector((state) => state.getPost);
-
-  useEffect(() => {
-    if (status === 'idle' && postId) {
-      dispatch(GetPost(postId));
-    }
-  }, [dispatch, status, postId]);
 
   const updateValues = {
-    title: data?.title || '',
-    body: data?.body || '',
+    userId: userId,
+    title: postTitle,
+    body:  postBody,
   };
   const initialValues = {
+    id: 100+3,
+    userId: '',
     title: '',
     body: '',
   };
@@ -29,16 +25,20 @@ const PostForm = ({ postId }) => {
     title: Yup.string().required('Title is required'),
     body: Yup.string().required('Body is required'),
   });
-
   const handleSubmit = (values, { resetForm }) => {
     if (postId) {
-      dispatch(UpdatePost({ id: postId, ...values }));
-      postId=""
+     dispatch(UpdatePost({ id: postId, updatePost: values }));
+      dispatch(updatePostLocally({ id: postId, ...values }));
     } else {
-      dispatch(SetPost(values));
+     dispatch(SetPost(values));
+      dispatch(setPostLocally(values));
     }
     resetForm();
+    if (onSuccess) {
+      onSuccess(); // Close the popover on success
+    }
   };
+
 
   return (
     <Formik
@@ -48,6 +48,16 @@ const PostForm = ({ postId }) => {
     >
       {({ isSubmitting }) => (
         <Form className="space-y-4 p-4 bg-gray-800 rounded-lg shadow-md">
+          <div className="flex flex-col">
+            <label htmlFor="userId" className="text-white font-semibold mb-2 flex justify-start">userId</label>
+            <Field
+              type="number"
+              id="userId"
+              name="userId"
+              className="p-2 border rounded-md border-gray-400 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <ErrorMessage name="userId" component="div" className="text-red-500 mt-1" />
+          </div>
           <div className="flex flex-col">
             <label htmlFor="title" className="text-white font-semibold mb-2 flex justify-start">Title</label>
             <Field

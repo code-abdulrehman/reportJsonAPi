@@ -22,30 +22,31 @@ export const DeletePost = createAsyncThunk(
 );
 
 export const DeletePostSlice = createSlice({
-    name:'deletePost',
+    name: 'deletePost',
     initialState: {
-        data: {},
+        data: [],
         status: 'idle',
         error: null,
-      },
-      reducers:{},
-      extraReducers: (builder)=>{
+    },
+    reducers: {},
+    extraReducers: (builder) => {
         builder
-        .addCase(DeletePost.pending, (state) => {
-            state.status = "loading";
-        })
-        .addCase(DeletePost.fulfilled, (state, action) => {
-            state.status = "succeeded";
-            state.data = action.payload;
-            state.error = null; 
-        })
-        
-        .addCase(DeletePost.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.payload || action.error.message
-            state.data = {}
-        })
-      }
-})
+            .addCase(DeletePost.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(DeletePost.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                // Filter the deleted post out from the data array
+                state.data = state.data.filter(post => post.id !== action.meta.arg);
+                state.error = null;
+            })
+            .addCase(DeletePost.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || action.error.message;
+                state.data = [];
+            });
+    }
+});
+
 
 export const DeletePostReducer = DeletePostSlice.reducer;

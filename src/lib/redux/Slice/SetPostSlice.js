@@ -24,30 +24,31 @@ export const SetPost = createAsyncThunk(
 );
 
 export const SetPostSlice = createSlice({
-    name:'setPost',
+    name: 'setPost',
     initialState: {
-        data: {},
+        data: [],
         status: 'idle',
         error: null,
-      },
-      reducers:{},
-      extraReducers: (builder)=>{
+    },
+    reducers: {},
+    extraReducers: (builder) => {
         builder
-        .addCase(SetPost.pending, (state) => {
-            state.status = "loading";
-        })
-        .addCase(SetPost.fulfilled, (state, action) => {
-            state.status = "succeeded";
-            state.data = action.payload;
-            state.error = null; 
-        })
-        
-        .addCase(SetPost.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.payload || action.error.message
-            state.data = {}
-        })
-      }
-})
+            .addCase(SetPost.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(SetPost.fulfilled, (state, action) => {
+                console.log('Post created:', action.payload);
+                state.status = "succeeded";
+                state.data.push(action.payload);
+                state.error = null;
+            })
+            .addCase(SetPost.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || action.error.message;
+                state.data = [];
+            });
+    }
+});
+
 
 export const SetPostReducer = SetPostSlice.reducer;
