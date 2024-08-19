@@ -68,6 +68,7 @@ const PostForm = ({ postId, postTitle, postBody, userId, onSuccess }) => {
               id="userId"
               name="userId"
               placeholder="Write userId  . . ."
+              min="1"
               className="p-2 border rounded-md border-gray-400 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             <ErrorMessage name="userId" component="div" className="text-red-500 mt-1 text-xs flex justify-start font-medium" />
